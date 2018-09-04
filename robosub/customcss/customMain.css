@@ -1,0 +1,10 @@
+.eventsLink a{
+  color: #11c700;
+}
+.eventsLink a:hover{
+  cursor: pointer;
+}
+.eventsLink h1{
+  color: #11c700;
+  border-bottom: 2px solid #11c700;
+}

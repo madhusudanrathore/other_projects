@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gitMatch</title>
+    <link rel="icon" href="gitmatch.png">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://bootswatch.com/simplex/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .avatar{
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+
+    <script
+  		src="https://code.jquery.com/jquery-3.1.1.js"
+  		integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+  		crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="custom.js"></script>
+
+  </head>
+
+  <body class="container-fluid">
+
+    <div class="container">
+
+      <div class="searchContainer">
+        <h1><img src="gitmatch.png" style="height: 100px; width: 100px;">gitMatch</h1>
+        <p class="lead">Enter a USERNAME to fetch their profile info and repos</p>
+        <input type="text" id="searchUser" class="form-control" placeholder="Github Username...">
+      </div>
+      <br>
+      <div id="profile"></div>
+
+    </div><!-- /.container -->
+
+</body>
+</html>

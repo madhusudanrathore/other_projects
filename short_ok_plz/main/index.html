@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+   <head>
+      <meta charset='utf-8' />
+      <title>Custom HTML5 Media Player</title>
+      <link href='style.css' rel='stylesheet' />
+      <script src='player.js'></script>
+   </head>
+
+   <body>
+
+      <div id='mediaPlayer'>
+         <!-- TOUCH ANYWHERE ON VIDEO TO TOGGLE PLAY/PAUSE -->
+         <video id='mediaVideo' height="300" width='700' autoplay>
+            <source src='video.mp4' type='video/mp4'>
+         </video>
+
+         <div id='mediaControls'>
+            <div>
+               <!-- SEEK SLIDER -->
+               <input id='seekSlider' type="range" min='0' max='100' value='0' step="1"/>
+            </div>
+
+            <!-- PLAY PAUSE AND STOP BUTTON -->
+            <button id='playPauseButton' class="custBtn">pause</button>
+            <button id='stopButton' class="custBtn">stop</button>
+
+            <!-- TIME DURATION -->
+            <span id="curTime">00:00</span> / <span id="durTime">00:00</span>
+
+            <!-- ADD/REMOVE CRISPS -->
+            <button id="toggleCrisps" class="custBtn">+</button>
+
+            <!-- VOLUME SETTINGS -->
+            <input id='volumeSlider' type="range" min='0' max='100' value='70' step="1"/>
+            <button id='muteButton' class="custBtn">mute</button>
+
+            <!-- FULL SCREEN BUTTON -->
+            <button id='fullScreenBtn' class="custBtn">[ &nbsp; ]</button>
+         </div>
+      </div>
+
+   </body>
+
+</html>

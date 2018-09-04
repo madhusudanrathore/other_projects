@@ -1,0 +1,23 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+#particles-js{
+	background:  url('main.gif') no-repeat center center fixed; 
+    background-attachment: fixed;
+    background-size: cover;
+}
+#content_lakshya{
+	color: #ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+	left:30%;
+	right: 30%;
+	position: absolute;
+}
+#count_down{
+  text-align: center;
+}
