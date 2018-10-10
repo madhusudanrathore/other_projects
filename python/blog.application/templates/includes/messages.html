@@ -5,3 +5,11 @@
     {% endfor %}
   {% endif %}
 {% endwith %}
+
+{% if manual_error_message %}
+	<div class="alert alert-danger">{{ manual_error_message }}</div>
+{% endif %}
+
+{% if manual_success_message %}
+	<div class="alert alert-success">{{ manual_success_message }}</div>
+{% endif %}
