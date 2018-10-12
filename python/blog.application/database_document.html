@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Database Commands</title>
+</head>
+<body>
+
+	<h1>Database commands for the simple blogging application</h1>
+	<ul>
+		<div>
+			<li>"users" table</li>
+			<p>CREATE TABLE users (id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);</p>
+		</div>
+		<div>
+			<li>"blogs_table" table</li>
+			<p>create table blogs_table( id INT(11) AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255),author VARCHAR(100) , body TEXT, create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP );</p>
+		</div>
+	</ul>
+
+</body>
+</html>

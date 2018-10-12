@@ -49,7 +49,7 @@ def get_blogs():
 	cur=mysql.connection.cursor()
 
 	# get user by username
-	result=cur.execute("SELECT * FROM articles_table")
+	result=cur.execute("SELECT * FROM blogs_table ORDER BY id DESC;")
 
 	blogs_retrieved=cur.fetchall()
 
@@ -69,7 +69,7 @@ def get_individual_blog(id):
 	cur=mysql.connection.cursor()
 
 	# get user by username
-	result=cur.execute("SELECT * FROM articles_table WHERE id=%s", [id])
+	result=cur.execute("SELECT * FROM blogs_table WHERE id=%s", [id])
 
 	blog_retrieved=cur.fetchone()
 
@@ -165,7 +165,7 @@ def home():
 	cur=mysql.connection.cursor()
 
 	# get user by username
-	result=cur.execute("SELECT * FROM articles_table")
+	result=cur.execute("SELECT * FROM blogs_table")
 
 	blogs_retrieved=cur.fetchall()
 
@@ -190,7 +190,7 @@ def logout():
 # blog form class 
 class BlogForm(Form):
 	title=StringField('Title',[validators.Length(min=1, max=200)])
-	body=TextAreaField('Body',[validators.Length(min=30)])
+	body=TextAreaField('Body')
 
 
 @app.route('/add_blog', methods=['GET', 'POST'])
@@ -205,7 +205,7 @@ def add_blog():
 		cur=mysql.connection.cursor()
 
 		# execute query
-		cur.execute("INSERT INTO articles_table(title, author, body) VALUES (%s, %s, %s)", (title, session['username'], body))
+		cur.execute("INSERT INTO blogs_table(title, author, body) VALUES (%s, %s, %s)", (title, session['username'], body))
 
 		# commit to database
 		mysql.connection.commit()
@@ -231,20 +231,27 @@ def edit_blog(blog_id):
 	cur=mysql.connection.cursor()
 
 	# execute query
-	cur.execute("SELECT * FROM articles_table WHERE id=%s", (blog_id))
+	cur.execute("SELECT * FROM blogs_table WHERE id=%s", (blog_id))
+
+	# get stored data of blog
+	stored_blog_data=cur.fetchone()
 
 	# get blog to be edited
 	blog=BlogForm(request.form)
 
+	# set values in form
+	blog.title.data=stored_blog_data['title']
+	blog.body.data=stored_blog_data['body']
+
 	if request.method=='POST' and blog.validate():
-		title=blog.title.data
-		body=blog.body.data
+		title=request.form['title']
+		body=request.form['body']
 
 		# create cursor cur
 		cur=mysql.connection.cursor()
 
 		# execute query
-		cur.execute("UPDATE articles_table SET title=%s, body=%s WHERE id=%s)", (title, body, blog_id))
+		cur.execute("UPDATE blogs_table SET title=%s, body=%s WHERE id=%s", (title, body, blog_id))
 
 		# commit to database
 		mysql.connection.commit()
@@ -260,6 +267,28 @@ def edit_blog(blog_id):
 
 	return render_template('edit_blog.html', html_blog=blog)
 
+
+# delete blog
+@app.route('/delete_blog/<string:blog_id>', methods=['POST'])
+@is_logged_in
+def delete_blog(blog_id):
+	# create cursor cur
+	cur=mysql.connection.cursor()
+
+	# execute query
+	cur.execute("DELETE FROM blogs_table WHERE id=%s", [blog_id])
+
+	# commit to database
+	mysql.connection.commit()
+
+	# close connection
+	cur.close()
+
+	# flashing with categories
+	flash('Blog Deleted Successfully.', 'success')
+
+	# redirect to login page
+	return redirect(url_for('home'))
 
 
 if __name__=='__main__':
