@@ -1,9 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-		<div class="jumbotron text-center">
-			<h1>Welcome {{ session.username }}</h1>
-		</div>
-		<p class="lead">Users List</p>
+		<h1>Welcome {{ session.username }}</h1>
+		<a href="/add_blog" class="btn btn-success">New Blog</a>
+
+		<table class="table table-striped">
+
+			<tr>
+				<th>Id</th>
+				<th>Title</th>
+				<th>Author</th>
+				<th>Date</th>
+				<th></th>
+				<th></th>
+			</tr>
+			{% for blogs in blogs_list %}
+				<tr>
+					<td>{{ blogs.id }}</td>
+					<td>{{ blogs.title }}</td>
+					<td>{{ blogs.author }}</td>
+					<td>{{ blogs.create_date }}</td>
+					<td><a href="/edit_blog/{{ blogs.id }}" class="btn btn-primary">Edit</a></td>
+					<td><a href="#" class="btn btn-danger">Delete</a></td>
+				</tr>
+			{% endfor %}
+			
+		</table>
 
 {% endblock %}

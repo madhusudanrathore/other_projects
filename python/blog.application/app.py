@@ -4,6 +4,7 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
 
+
 app=Flask(__name__)
 
 
@@ -18,19 +19,61 @@ app.config['MYSQL_CURSORCLASS']='DictCursor'
 mysql=MySQL(app)
 
 
+# check if user is logged in
+# use before function where authenticaion is required
+def is_logged_in(f):
+	@wraps(f)
+	def wrap(*args, **kwargs):
+		if 'logged_in' in session:
+			return f(*args, **kwargs)
+		else:
+			flash('Unauthorized Access, Log in first', 'danger')
+			return redirect(url_for('login'))
+	return wrap
+
+
 @app.route('/')
 def index():
 	return render_template('index.html')
 
 
 @app.route('/about')
+@is_logged_in
 def about():
 	return render_template('about.html')
 
 
 @app.route('/blogs')
-def blogs():
-	return render_template('blogs.html')
+def get_blogs():
+	# create cursor
+	cur=mysql.connection.cursor()
+
+	# get user by username
+	result=cur.execute("SELECT * FROM articles_table")
+
+	blogs_retrieved=cur.fetchall()
+
+	if result>0:
+		return render_template('blogs.html', blogs_list=blogs_retrieved)
+	else:
+		msg="No Blogs found"
+		return render_template('blogs.html', msg_received=msg)
+
+	# close connection
+	cur.close()
+
+
+@app.route('/blog/<string:id>/')
+def get_individual_blog(id):
+	# create cursor
+	cur=mysql.connection.cursor()
+
+	# get user by username
+	result=cur.execute("SELECT * FROM articles_table WHERE id=%s", [id])
+
+	blog_retrieved=cur.fetchone()
+
+	return render_template('blog.html', blog=blog_retrieved)
 
 
 # register form class 
@@ -41,7 +84,7 @@ class RegisterForm(Form):
 	password=PasswordField('Password',[
 		validators.DataRequired(),
 		validators.EqualTo('confirm',message='Passwords do not match'),
-		[validators.Length(min=6, max=50)]
+		validators.Length(min=6, max=50)
 	])
 	confirm=PasswordField('Cofirm Password')
 
@@ -115,30 +158,108 @@ def login():
 	return render_template('login.html')
 
 
-# check if user is logged in
-# use before function where authenticaion is required
-def is_logged_in(f):
-	@wraps(f)
-	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
-			return f(*args, **kwargs)
-		else:
-			flash('Unauthorized Access, Log in first', 'danger')
-			return redirect(url_for('login'))
-	return wrap
-
-
 @app.route('/home')
 @is_logged_in
 def home():
-	return render_template('home.html')
+	# create cursor
+	cur=mysql.connection.cursor()
+
+	# get user by username
+	result=cur.execute("SELECT * FROM articles_table")
+
+	blogs_retrieved=cur.fetchall()
+
+	if result>0:
+		return render_template('home.html', blogs_list=blogs_retrieved)
+	else:
+		msg="No Blogs found"
+		return render_template('home.html', msg_received=msg)
+
+	# close connection
+	cur.close()
 
 
 @app.route('/logout')
+@is_logged_in
 def logout():
 	session.clear()
 	flash('Log Out Successfull', 'success')
 	return redirect(url_for('login'))
+
+
+# blog form class 
+class BlogForm(Form):
+	title=StringField('Title',[validators.Length(min=1, max=200)])
+	body=TextAreaField('Body',[validators.Length(min=30)])
+
+
+@app.route('/add_blog', methods=['GET', 'POST'])
+@is_logged_in
+def add_blog():
+	new_blog=BlogForm(request.form)
+	if request.method=='POST' and new_blog.validate():
+		title=new_blog.title.data
+		body=new_blog.body.data
+
+		# create cursor cur
+		cur=mysql.connection.cursor()
+
+		# execute query
+		cur.execute("INSERT INTO articles_table(title, author, body) VALUES (%s, %s, %s)", (title, session['username'], body))
+
+		# commit to database
+		mysql.connection.commit()
+
+		# close connection
+		cur.close()
+
+		# flashing with categories
+		flash('New Blog created Successfully.', 'success')
+
+		# redirect to login page
+		return redirect(url_for('home'))
+
+	return render_template('add_blog.html', html_new_blog=new_blog)
+
+
+# edit blog
+@app.route('/edit_blog/<string:blog_id>', methods=['GET', 'POST'])
+@is_logged_in
+def edit_blog(blog_id):
+
+	# create cursor cur
+	cur=mysql.connection.cursor()
+
+	# execute query
+	cur.execute("SELECT * FROM articles_table WHERE id=%s", (blog_id))
+
+	# get blog to be edited
+	blog=BlogForm(request.form)
+
+	if request.method=='POST' and blog.validate():
+		title=blog.title.data
+		body=blog.body.data
+
+		# create cursor cur
+		cur=mysql.connection.cursor()
+
+		# execute query
+		cur.execute("UPDATE articles_table SET title=%s, body=%s WHERE id=%s)", (title, body, blog_id))
+
+		# commit to database
+		mysql.connection.commit()
+
+		# close connection
+		cur.close()
+
+		# flashing with categories
+		flash('Blog edited successfully.', 'success')
+
+		# redirect to login page
+		return redirect(url_for('home'))
+
+	return render_template('edit_blog.html', html_blog=blog)
+
 
 
 if __name__=='__main__':

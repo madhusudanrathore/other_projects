@@ -2,6 +2,16 @@
 
 {% block body %}
 		<div class="jumbotron text-center">
-			<h1>Recent Blogs</h1>
+			<h1>Recent Blogs of {{ session.username }}</h1>
 		</div>
+
+		{% for blogs in blogs_list %}
+		<div>
+			<h3>{{ blogs.author }}</h3>
+			<small>posted on {{ blogs.create_date }}</small>
+			<a href="/blog/{{blogs.id}}">{{ blogs.title }}</a>
+		</div>
+		<hr>
+		{% endfor %}
+
 {% endblock %}
