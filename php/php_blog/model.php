@@ -12,7 +12,7 @@
 			/*MAKE A NEW ENTRY RECORD FOR USER*/
 			$new_user_query = "INSERT INTO user_table (NAME, EMAIL, CONTACT_NUMBER, PASSWORD) VALUES ('$name_param', '$email_param', '$contact_param', '$password_param')";
 			/*MAKE A NEW TABLE TO STORE USER'S BLOGS*/
-			$new_usertable_query = "CREATE TABLE `$email_param` ( HEADING VARCHAR(50) , DESCRIPTION VARCHAR(500) NOT NULL, PUBLISH_DATE TIMESTAMP )";
+			$new_usertable_query = "CREATE TABLE `$email_param` ( ID INT(10) AUTO_INCREMENT PRIMARY KEY, HEADING VARCHAR(50) , DESCRIPTION VARCHAR(500) NOT NULL, PUBLISH_DATE TIMESTAMP )";
 
 			if ($this->conn->query($new_usertable_query) === TRUE) {
 			    if ($this->conn->query($new_user_query) === TRUE) {
@@ -53,13 +53,13 @@
 			if ($this->conn->query($new_blog_query) === FALSE ) {  echo "Error: " . $new_blog_query . " " . $this->conn->error;  }
 		}
 
-		function delete_blog( $email_param, $heading_param, $content_param ){
-			$delete_blog_query = "DELETE FROM `$email_param` WHERE HEADING='$heading_param'";
+		function delete_blog( $email_param, $id_param ){
+			$delete_blog_query = "DELETE FROM `$email_param` WHERE ID='$id_param'";
 			if ($this->conn->query($delete_blog_query) === FALSE) {  echo "Error: " . $delete_blog_query . " " . $this->conn->error; }
 		}
 
-		function edit_blog( $email_param, $heading_param, $content_param ){
-			$edit_blog_query = "UPDATE `$email_param` SET DESCRIPTION = '$content_param' WHERE HEADING = '$heading_param'";
+		function edit_blog( $email_param, $id_param, $heading_param, $content_param ){
+			$edit_blog_query = "UPDATE `$email_param` SET DESCRIPTION = '$content_param', HEADING = '$heading_param' WHERE ID = '$id_param'";
 			if ($this->conn->query($edit_blog_query) === FALSE) { echo "Error: " . $edit_blog_query . " " . $this->conn->error; }
 		}
 

@@ -1,2 +1,5 @@
 *.class
 *.pdf
+*.tar
+*.tar.gz
+*.zip

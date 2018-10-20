@@ -30,18 +30,24 @@
 		$m->new_blog( $email, $heading, $content );
 		header("location: ./index.php");
 	}
+	if(isset($_POST['cancel_blog_btn'])){/*IF CANCEL BLOG BUTTON IS CLICKED*/
+		header("location: ./index.php");
+	}
 	if(isset($_POST['delete_blog_btn'])){/*IF DELETE BLOG BUTTON IS CLICKED*/
 		$email = $_SESSION['user_email'];
-		$heading = $_POST['blog_heading'];
-		$content = $_POST['blog_content'];
-		$m->delete_blog( $email, $heading, $content );
+		$id = $_POST['delete_blog_hidden_id_parameter'];
+		$m->delete_blog( $email, $id );
 		header("location: ./index.php"); 
 	}
 	if(isset($_POST['confirm_edit_blog_btn'])){/*IF EDITING OF BLOG IS CONFIRMED*/
 		$email = $_SESSION['user_email'];
+		$id = $_POST['blog_id'];
 		$heading = $_POST['blog_heading'];
 		$content = $_POST['blog_content'];
-		$m->edit_blog( $email, $heading, $content );
+		$m->edit_blog( $email, $id, $heading, $content );
+		header("location: ./index.php");
+	}
+	if(isset($_POST['cancel_edit_blog'])){/*IF CANCEL BLOG IS CLICKED*/
 		header("location: ./index.php");
 	}
 ?>

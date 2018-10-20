@@ -8,7 +8,7 @@
 				<textarea rows="10" cols="50" name="blog_content" placeholder="content goes here"></textarea>
 			</div>
 			<input type="submit" class="btn btn-success" name="new_blog_btn" value="Publish">
-			<input type="reset" class="btn btn-danger" name="cancel_blog_btn" value="Cancel">
+			<input type="submit" class="btn btn-danger" name="cancel_blog_btn" value="Cancel">
 		</form>
 	</div>
 

@@ -19,7 +19,7 @@
 				<h1 style="text-align: center;">Welcome to LBlog!</h1>
 				<div style="float: right;">
 					<span>Hello! <b><?php echo $_SESSION['user_email']; ?></b></span>
-					<a href="./create_blogs.php" target="_blank" class="btn btn-primary">New Blog</a>
+					<a href="./create_blogs.php" class="btn btn-primary">New Blog</a>
 					<input type="submit" class="btn btn-danger" name="log_out_btn" value="Log Out">
 				</div>
 			</form>
