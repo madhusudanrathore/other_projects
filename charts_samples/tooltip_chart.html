@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tooltip Chart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	
+	<!-- Brite Charts -->
+	<script src="https://cdn.jsdelivr.net/npm/britecharts@2.9.8/dist/bundled/britecharts.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="custom_css/britecharts.css">
+
+</head>
+<body>
+
+	<div class="js-bar-chart-tooltip-container card--chart"></div>
+
+	<script>
+		let barData={
+			data:[
+				{value:18, name:'2012'},
+				{value:15, name:'2013'},
+				{value:21, name:'2014'},
+				{value:10, name:'2015'}
+				]
+		};
+
+		function createBarChart() {
+		    let barChart = new britecharts.bar(),
+		        chartTooltip = new britecharts.miniTooltip(),
+		        barContainer = d3.select('.js-bar-chart-tooltip-container'),
+		        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+		        tooltipContainer;
+
+		    barChart
+		      // .isAnimated(true)
+		      .colorSchema(britecharts.colors.colorSchemas.britecharts)
+		      .width(containerWidth)
+		      .height(500)
+		      .percentageAxisToMaxRatio(1.3)
+		      .on('customMouseOver', chartTooltip.show)
+		      .on('customMouseMove', chartTooltip.update)
+		      .on('customMouseOut', chartTooltip.hide);
+
+		      chartTooltip
+		      .title("Ftab 1 Data");
+
+		    barContainer.datum(barData.data).call(barChart);
+		  
+		    tooltipContainer = d3.select('.bar-chart .metadata-group');
+		    tooltipContainer.datum([]).call(chartTooltip);
+		}
+
+		createBarChart()
+	</script>
+
+	<script src='https://dtj76ow1clmcw.cloudfront.net/static/app-min.js'></script>
+
+</body>
+</html>

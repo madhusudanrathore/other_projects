@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>chart demo</title>
+	<!-- Brite Charts -->
+	<script src="https://cdn.jsdelivr.net/npm/britecharts@2.9.8/dist/bundled/britecharts.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" charset="utf-8"></script>
+
+	<link rel="stylesheet" type="text/css" href="custom_css/britecharts.css">
+
+	<link rel="stylesheet" type="text/css" href="./custom_css/bootstrap.css">
+</head>
+<body>
+
+	<div class="row">
+		<div class="col-sm-5">
+			<div class="js-chart-container"></div>
+		</div>
+		<div class="col-sm-7">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate veladasdasddhfsafdjsjfdkhsjkfdhsdf
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-5">
+			<div class="js-chart-legend"></div>
+		</div>
+		<div class="col-sm-7">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+	</div>
+	<script>
+		dataset=[{quantity: 3,name: 'glittering',id: 1},{quantity: 7,name: 'luminous',id: 2}]; // for donut chart
+
+		barData = [{value:18, name:'2012'},{value:15, name:'2013'},{value:21, name:'2014'},{value:10, name:'2015'}]; // for bar chart
+
+		var container = d3.select('.js-chart-container');
+		var legendContainer = d3.select('.js-chart-legend');
+		
+		DonutChart = window.britecharts.donut;
+		BarChart = window.britecharts.bar;
+		LegendChart = window.britecharts.legend;
+
+		donutChart = new DonutChart();
+		barChart = new BarChart();
+		legendChart = new LegendChart();
+
+		containerWidth = container.node()?container.node().getBoundingClientRect().width : false;
+
+		if(container.node()){
+			barChart
+			.width(containerWidth)
+			.enableLabels(true)
+			.height(300)
+			// .hasPercentage(true)
+			.labelsNumberFormat(".2f");
+			
+			donutChart
+			.isAnimated(true)
+			.highlightSliceById(1)
+			.hasFixedHighlightedSlice(true)
+			.width(containerWidth)
+			.height(containerWidth)
+			.externalRadius(containerWidth/2.5)
+			.internalRadius(containerWidth/5);
+		}
+
+		container.datum(dataset).call(donutChart);
+		legendContainer.datum(barData).call(barChart);
+
+		const redrawChart = () => {
+			let new_donout_container = d3.select('.js-chart-container');
+			let newContainerWidth = new_donout_container.node() ? new_donout_container.node().getBoundingClientRect().width : false;
+			// Setting the new width on the chart
+			donutChart.width(newContainerWidth);
+			donutChart.height(newContainerWidth);
+			// Rendering the chart again
+			new_donout_container.datum(dataset).call(donutChart);
+
+
+			let new_bar_container = d3.select('.js-chart-legend');
+			let new_bar_container_width = new_bar_container.node() ? new_bar_container.node().getBoundingClientRect().width : false;
+			// Setting the new width on the chart
+			barChart.width(new_bar_container_width);
+			barChart.height(new_bar_container_width);
+			// Rendering the chart again
+			new_bar_container.datum(barData).call(barChart);
+		};
+		const throttledRedraw =  _.throttle(redrawChart, 200);
+		window.addEventListener("resize", throttledRedraw);
+	</script>
+	<script src='https://dtj76ow1clmcw.cloudfront.net/static/app-min.js'></script>
+
+
+</body>
+</html>

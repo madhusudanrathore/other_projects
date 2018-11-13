@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Demo</title>
+	
+	<!-- script for displaying live options when searching -->
+	<script>
+		var articles_list=['Yes Bank- When the pillars break down',
+							'Gold Rush - Demystifying Titan',
+							'Marico - Onwards and Upwards',
+							'Kingfisher — The King of Good Times?',
+							'PVR: The pursuit of an Unreasonable Man',
+							'Jockey - How to make millions with underwear',
+							'Eicher Motors - From Good to Great',
+							'Jet Airways : How not to take on debt?'
+							];
+		
+		// naive search algorithm for displaying data
+		function displayData( event ){
+			// define variables
+    		var search_query=event.value.toLowerCase(), index, temp;
+
+    		// remove old entries before adding new entries
+    		for( index=0; index<articles_list.length; ++index ){
+    			
+    			temp = document.getElementById(articles_list[index].toLowerCase());
+
+    			if(temp){
+    				temp.remove();
+    			}
+
+			}
+
+			if( search_query!=="" ){ // add new entries only if string is not empty
+
+	    		for( index=0; index<articles_list.length; ++index ){
+	    			temp = articles_list[index].toLowerCase(); // get temp article in lowercase
+
+					if( temp.includes(search_query) ){ // compare article with search string
+
+						new_row = document.createElement("li"); // create a new li tag
+						new_row.setAttribute("id",articles_list[index].toLowerCase()); // set id for li tag
+						new_row.appendChild(document.createTextNode(articles_list[index])); // set value that would be displayed yo user
+						new_row.setAttribute("id",articles_list[index].toLowerCase()); // set id for li tag
+						new_row.style.color = "#660099"; // set color
+
+						document.getElementById("demo").appendChild(new_row); // append to ul tag
+					}
+	    		}
+	    	}
+		}
+
+	</script>
+
+</head>
+
+<body>
+
+	<div class="container" style="margin-top: 25px;">
+		<input type="text" id="search_bar" onkeyup="displayData(this)" placeholder="Search Articles" size="4">
+		<ul id="demo"></ul>
+	</div>
+
+</body>
+</html>
