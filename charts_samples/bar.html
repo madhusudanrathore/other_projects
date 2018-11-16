@@ -1,8 +1,6 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
     <script src="https://g.alicdn.com/bizcharts/io-asserts/3.1.2/react16.0.0.production.min.js"></script>
     <script src="https://g.alicdn.com/bizcharts/io-asserts/3.1.2/react-dom16.0.0.production.min.js"></script>
     <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
@@ -13,332 +11,344 @@
 
   </head>
   <body>
-    <div id="mountNode" ></div>
-    <script type="text/babel">
+      <div id="mountNode" ></div>
+      <script type="text/babel">
 
-      const { Chart, Axis, Geom, Tooltip, Coord, Label, Legend, View, Guide, Shape, Facet  } = window.BizCharts;
-      const { DataView } = DataSet;
-      const { Html } = Guide;
+        const { Chart, Axis, Geom, Tooltip, Coord, Label, Legend, View, Guide, Shape, Facet  } = window.BizCharts;
+        const { DataView } = DataSet;
+        const { Html } = Guide;
 
-      const barData = [
-        { year: '1951 ', sales: 38 },
-        { year: '1952 ', sales: 52 },
-        { year: '1956 ', sales: 61 },
-        { year: '1957 ', sales: 145 },
-        { year: '1958 ', sales: 48 },
-        { year: '1959 ', sales: 38 },
-        { year: '1960 ', sales: 38 },
-        { year: '1962 ', sales: 38 },
-      ];
-      const pieData = [
+        const barData = [
+          { year: '1951 ', sales: 38 },
+          { year: '1952 ', sales: 52 },
+          { year: '1956 ', sales: 61 },
+          { year: '1957 ', sales: 145 },
+          { year: '1958 ', sales: 48 },
+          { year: '1959 ', sales: 38 },
+          { year: '1960 ', sales: 38 },
+          { year: '1962 ', sales: 38 },
+        ];
+        
+        const pieData = [
         { item: 'abc', count: 30 },
         { item: 'cba', count: 20 },
         { item: 'xyz', count: 11 },
         { item: 'zyx', count: 10 },
         { item: 'abcagain', count: 30 }
-      ];
-      const dualAxisData = [{
-        month: 'Jan',
-        rainfall: 49.9,
-        seaLevelPressure: 1016,
-        temperature: 7
-        }, {
-          month: 'Feb',
-          rainfall: 71.5,
+        ];
+        
+        const dualAxisData = [{
+          month: 'Jan',
+          rainfall: 49.9,
           seaLevelPressure: 1016,
-          temperature: 6.9
-        }, {
-          month: 'Mar',
-          rainfall: 106.4,
-          seaLevelPressure: 1015.9,
-          temperature: 9.5
-        }, {
-          month: 'Apr',
-          rainfall: 129.2,
-          seaLevelPressure: 1015.5,
-          temperature: 14.5
-        }, {
-          month: 'May',
-          rainfall: 144,
-          seaLevelPressure: 612.3,
-          temperature: 18.2
-        }, {
-          month: 'Jun',
-          rainfall: 176,
-          seaLevelPressure: 809.5,
-          temperature: 21.5
-        }];
-      const stackedBarData = [
-        { name:'London', 'Jan.': 18.9, 'Feb.': 28.8, 'Mar.' :39.3, 'Apr.': 81.4, 'May': 47, 'Jun.': 20.3, 'Jul.': 24, 'Aug.': 35.6 },
-        { name:'Berlin', 'Jan.': 12.4, 'Feb.': 23.2, 'Mar.' :34.5, 'Apr.': 99.7, 'May': 52.6, 'Jun.': 35.5, 'Jul.': 37.4, 'Aug.': 42.4}
-      ];
-      const dualAxisLabel = {
-        xAxis: {
-          formatter: val => `${val}`,
-          // 格式化坐标轴显示
-          textStyle: {
-
-
-            fontSize: '1em'
-          }
-        },
-        yAxis1: {
-          formatter: val => `${val}`,
-          // 格式化坐标轴显示
-          textStyle: {// fill: '#f33274',
-            // rotate : 60
-            fontSize: '1em'
-          }
-        },
-        yAxis2: {
-          formatter: val => `${val}`,
-          // 格式化坐标轴显示
-          textStyle: {
-            fill: 'red' // rotate : 60
-
+          temperature: 7
+          }, {
+            month: 'Feb',
+            rainfall: 71.5,
+            seaLevelPressure: 1016,
+            temperature: 6.9
+          }, {
+            month: 'Mar',
+            rainfall: 106.4,
+            seaLevelPressure: 1015.9,
+            temperature: 9.5
+          }, {
+            month: 'Apr',
+            rainfall: 129.2,
+            seaLevelPressure: 1015.5,
+            temperature: 14.5
+          }, {
+            month: 'May',
+            rainfall: 144,
+            seaLevelPressure: 612.3,
+            temperature: 18.2
+          }, {
+            month: 'Jun',
+            rainfall: 176,
+            seaLevelPressure: 809.5,
+            temperature: 21.5
+          }];
+        
+        const stackedBarData = [
+          { name:'London', 'Jan.': 18.9, 'Feb.': 28.8, 'Mar.' :39.3, 'Apr.': 81.4, 'May': 47, 'Jun.': 20.3, 'Jul.': 24, 'Aug.': 35.6 },
+          { name:'Berlin', 'Jan.': 12.4, 'Feb.': 23.2, 'Mar.' :34.5, 'Apr.': 99.7, 'May': 52.6, 'Jun.': 35.5, 'Jul.': 37.4, 'Aug.': 42.4}
+        ];
+        
+        const dualAxisLabel = {
+          xAxis: {
+            formatter: val => `${val}`,
+            // 格式化坐标轴显示
+            textStyle: {
+              fontSize: '1em'
+            }
           },
-          labelLine: {
-            lineDash: [3, 3]
-          }
-        }
-      };
-      const dualAxisGeomLabel = {
-        yAxis1: {
-          labelLine: {
-            lineWidth: 1,
-            // 线的粗细
-            stroke: '#ff8800',
-            // 线的颜色
-            lineDash: [2, 2] // 虚线样式
-
+          yAxis1: {
+            formatter: val => `${val}`,
+            // 格式化坐标轴显示
+            textStyle: {// fill: '#f33274',
+              // rotate : 60
+              fontSize: '1em'
+            }
           },
-          content: ['month*rainfall', (month, rainfall) => `${rainfall}mm`]
-        }
-      }
-      const dualAxisScale = {
-        month: {
-          alias: '2018（month）'
-        },
-        rainfall: {
-          min: 0,
-          tickCount: 7,
-          alias: 'Rainfall (mm)'
-        },
-        seaLevelPressure: {
-          min: 0,
-          tickCount: 7,
-          alias: 'Sea Level Pressure (mb)'
-        }
-      };
-      const cols = {
-        'sales': {
-          tickInterval: 20,
-          alias: 'Sales (in Cr)'
-        },
-      };
-
-      const label = {
-        year: {
-          formatter: val => `${val} .`,
-          // 格式化坐标轴显示
-          textStyle: {
-            fill: '#e5d981',
-            rotate: 100
-          }
-        },
-        sales: {
-          formatter: val => `${val}`,
-          // 格式化坐标轴显示
-          textStyle: {// fill: '#f33274',
-            // rotate : 60
-            fontSize: '1em'
-          }
-        }
-      };
-      const geomLabel = {
-        sales: {
-          content: ['year*sales', (year, sales) => `${sales}k`]
-        }
-      }; // 默认选中第三项的结果
-
-      const styles = {
-        wrapper: {
-          maxWidth: 1080,
-          textAlign: 'center',
-          padding: 20,
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        },
-        mainTitle: {
-          fontSize: 18,
-          color: '#333',
-          display: 'block',
-          padding: 10
-        },
-        subTitle: {
-          fontSize: 14,
-          color: '#bbb',
-          display: 'block',
-          padding: 10
-        }
-      };
-
-      class BarChart extends React.Component{
-        render() {
-          return <div style={this.props.styles.wrapper}>
-              <Chart renderer='svg' height={this.props.height} data ={this.props.data} scale={this.props.scale} forceFit>
-              // TODO: 1)Check if the title and subtitle are present before rendering 2)GeomLabel - generic function 3)Legend
-              <span className="main-title" style={this.props.styles.mainTitle}>
-                {this.props.title}
-              </span>
-              <span className="sub-title" style={this.props.styles.subTitle}>
-                {this.props.subTitle}
-              </span>
-              <Axis name={this.props.xAxis} />
-              <Axis name={this.props.yAxis} title />
-              <Tooltip crosshairs={{type: "y"}}/>
-              <Geom type="interval" position={this.props.xAxis + "*" + this.props.yAxis} color={this.props.color}>
-                <Label content={this.props.geomLabel.sales.content} labelLine={this.props.geomLabel.sales.labelLine} />
-              </Geom>
-              </Chart>
-            </div>;
-        }
-      }
-
-      // TODO: Understand ToolTip Generation - Ideally we can include year as title?
-      // TODO: Responsive Label. Have Label in web and replace it with Legend in mobile
-      class PieChart extends React.Component{
-
-        getScale(){
-          const cols = {
-          percent: {
-            formatter: val => {
-              val = (val.toFixed(4) * 100) + '%';
-              return val;
+          yAxis2: {
+            formatter: val => `${val}`,
+            // 格式化坐标轴显示
+            textStyle: {
+              fill: 'red' // rotate : 60
+            },
+            labelLine: {
+              lineDash: [3, 3]
             }
           }
         };
-        return cols;
-        }
+        
+        const dualAxisGeomLabel = {
+          yAxis1: {
+            labelLine: {
+              lineWidth: 1,
+              // 线的粗细
+              stroke: '#ff8800',
+              // 线的颜色
+              lineDash: [2, 2] // 虚线样式
 
-       transformData(oldData){
-           const dv1 = new DataView();
-           dv1.source(oldData).transform({
-             type: 'percent',
-             field: 'count',
-             dimension: 'item',
-             as: 'percent'
-           });
-           return dv1;
-         }
+            },
+            content: ['month*rainfall', (month, rainfall) => `${rainfall}mm`]
+          }
+        }
+        
+        const dualAxisScale = {
+          month: {
+            alias: '2018（month）'
+          },
+          rainfall: {
+            min: 0,
+            tickCount: 7,
+            alias: 'Rainfall (mm)'
+          },
+          seaLevelPressure: {
+            min: 0,
+            tickCount: 7,
+            alias: 'Sea Level Pressure (mb)'
+          }
+        };
+        
+        const cols = {
+          'sales': {
+            tickInterval: 20,
+            alias: 'Sales (in Cr)'
+          },
+        };
 
-        render() {
-          return <div >
-            <Chart renderer='svg' height={this.props.height} data={this.transformData(this.props.data)} scale={this.getScale()} forceFit>
-              <Coord type={'theta'} radius={this.props.radius} innerRadius={this.props.innerRadius}/>
-              <Axis name="percent" />
-              <Tooltip showTitle={false}
-                itemTpl = '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-                />
-              <Guide>
-              </Guide>
-              <Geom
-                type="intervalStack"
-                position="percent"
-                color ='item'
-                tooltip={['item*percent',(item, percent) => {
-                  percent = percent.toFixed(4) * 100 + '%';
-                  return {
-                    name: item,
-                    value: percent
-                  };
-                }]}
-                style={{lineWidth: 1,stroke: '#fff'}}
-              >
-              <Label content='percent'  textStyle={{fontSize:24}} formatter={(val, item) => {
-                  return item.point.item + '- ' + val;}} />
-              </Geom>
-            </Chart>
-          </div>;
-        }
-      }
+        const label = {
+          year: {
+            formatter: val => `${val} .`,
+            // 格式化坐标轴显示
+            textStyle: {
+              fill: '#e5d981',
+              rotate: 100
+            }
+          },
+          sales: {
+            formatter: val => `${val}`,
+            // 格式化坐标轴显示
+            textStyle: {// fill: '#f33274',
+              // rotate : 60
+              fontSize: '1em'
+            }
+          }
+        };
+        const geomLabel = {
+          sales: {
+            content: ['year*sales', (year, sales) => `${sales}k`]
+          }
+        }; // 默认选中第三项的结果
 
-      //Multiple Bars with Same Axes
-      class MultiBarChart extends React.Component{
-        render(){
-          return ;
-        }
-      }
+        const styles = {
+          wrapper: {
+            maxWidth: 1080,
+            textAlign: 'center',
+            padding: 20,
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          },
+          mainTitle: {
+            fontSize: 18,
+            color: '#333',
+            display: 'block',
+            padding: 10
+          },
+          subTitle: {
+            fontSize: 14,
+            color: '#bbb',
+            display: 'block',
+            padding: 10
+          }
+        };
 
-      class StackedBarChart extends React.Component{
-        transformData(oldData, xAxisElements){
-          const ds = new DataSet();
-          const dv = ds.createView().source(oldData);
-          dv.transform({
-            type: 'fold',
-            fields: xAxisElements, // 展开字段集
-            key: 'xAxis', // key字段
-            value: 'yAxis', // value字段
-          });
-          return dv;
-        }
-        render(){
-          return <div style={this.props.styles.wrapper}>
-          <Chart height={this.props.height} data={this.transformData(this.props.data,this.props.xAxisElements)} forceFit>
-          <span className="main-title" style={this.props.styles.mainTitle}>
-            {this.props.title}
-          </span>
-          <span className="sub-title" style={this.props.styles.subTitle}>
-            {this.props.subTitle}
-          </span>
-            <Legend />
-            <Axis name={"xAxis"} />
-            <Axis name={"yAxis"} />
-            <Tooltip />
-            <Geom type='intervalStack' position={"xAxis*yAxis"} color={'name'} style={{stroke: '#fff',lineWidth: 1}} />
-          </Chart>
-          </div>;
-        }
-      }
-      
-      //Dual Axis - Bar-Bar, Bar-line, Bar-xyz
-      class DualAxisChart extends React.Component{
-        render(){
-          return <div style={this.props.styles.wrapper}>
-              <Chart height={this.props.height} data={this.props.data} renderer='svg' scale={this.props.scale} forceFit padding={[60, 70, 60, 60]} >
+        class BarChart extends React.Component{
+          render() {
+            return <div style={this.props.styles.wrapper}>
+                <Chart renderer='svg' height={this.props.height} data ={this.props.data} scale={this.props.scale} forceFit>
+                // TODO: 1)Check if the title and subtitle are present before rendering 2)GeomLabel - generic function 3)Legend
                 <span className="main-title" style={this.props.styles.mainTitle}>
                   {this.props.title}
                 </span>
                 <span className="sub-title" style={this.props.styles.subTitle}>
                   {this.props.subTitle}
                 </span>
-                <Axis name={this.props.xAxis}  label={this.props.label.xAxis}/>
-                <Axis name={this.props.yAxis1} label={this.props.label.yAxis1} title />
-                <Axis name={this.props.yAxis2} label={this.props.label.yAxis2} title />
-                <Legend position="top" />
-                <Tooltip crosshairs={{type:'rect'}} />
-                <Geom type="interval" position={this.props.xAxis+"*"+ this.props.yAxis1} color="#a8de4d">
-                  <Label content={this.props.geomLabel.yAxis1.content} labelLine={this.props.geomLabel.yAxis1.labelLine} />
+                <Axis name={this.props.xAxis} />
+                <Axis name={this.props.yAxis} title />
+                <Tooltip crosshairs={{type: "y"}}/>
+                <Geom type="interval" position={this.props.xAxis + "*" + this.props.yAxis} color={this.props.color}>
+                  <Label content={this.props.geomLabel.sales.content} labelLine={this.props.geomLabel.sales.labelLine} />
                 </Geom>
-                <Geom type="line" position={this.props.xAxis+"*"+this.props.yAxis2} color="#f99540" shape="smooth" size={2} label={this.props.label.yAxis2} />
-                <Geom type="point" position={this.props.xAxis+"*"+this.props.yAxis2} color="#f33274" shape="circle" size={4} />
-              </Chart>
-
-
-            </div>;
+                </Chart>
+              </div>;
+          }
         }
-      }
+
+        // TODO: Understand ToolTip Generation - Ideally we can include year as title?
+        // TODO: Responsive Label. Have Label in web and replace it with Legend in mobile
+        class PieChart extends React.Component{
+
+          getScale(){
+            const cols = {
+            percent: {
+              formatter: val => {
+                val = (val.toFixed(4) * 100) + '%';
+                return val;
+              }
+            }
+          };
+          return cols;
+          }
+
+         transformData(oldData){
+             const dv1 = new DataView();
+             dv1.source(oldData).transform({
+               type: 'percent',
+               field: 'count',
+               dimension: 'item',
+               as: 'percent'
+             });
+             return dv1;
+           }
+
+          render() {
+            return <div >
+              <Chart renderer='svg' height={this.props.height} data={this.transformData(this.props.data)} scale={this.getScale()} forceFit>
+                <Coord type={'theta'} radius={this.props.radius} innerRadius={this.props.innerRadius}/>
+                <Axis name="percent" />
+                <Tooltip showTitle={false}
+                  itemTpl = '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+                  />
+                <Guide>
+                </Guide>
+                <Geom
+                  type="intervalStack"
+                  position="percent"
+                  color ='item'
+                  tooltip={['item*percent',(item, percent) => {
+                    percent = percent.toFixed(4) * 100 + '%';
+                    return {
+                      name: item,
+                      value: percent
+                    };
+                  }]}
+                  style={{lineWidth: 1,stroke: '#fff'}}
+                >
+                <Label content='percent'  textStyle={{fontSize:24}} formatter={(val, item) => {
+                    return item.point.item + '- ' + val;}} />
+                </Geom>
+              </Chart>
+            </div>;
+          }
+        }
+
+        //Multiple Bars with Same Axes
+        class MultiBarChart extends React.Component{
+          render(){
+            return ;
+          }
+        }
+
+        class StackedBarChart extends React.Component{
+          transformData(oldData, xAxisElements){
+            const ds = new DataSet();
+            const dv = ds.createView().source(oldData);
+            dv.transform({
+              type: 'fold',
+              fields: xAxisElements, // 展开字段集
+              key: 'xAxis', // key字段
+              value: 'yAxis', // value字段
+            });
+            return dv;
+          }
+          render(){
+            return <div style={this.props.styles.wrapper}>
+            <Chart height={this.props.height} data={this.transformData(this.props.data,this.props.xAxisElements)} forceFit>
+            <span className="main-title" style={this.props.styles.mainTitle}>
+              {this.props.title}
+            </span>
+            <span className="sub-title" style={this.props.styles.subTitle}>
+              {this.props.subTitle}
+            </span>
+              <Legend />
+              <Axis name={"xAxis"} />
+              <Axis name={"yAxis"} />
+              <Tooltip />
+              <Geom type='intervalStack' position={"xAxis*yAxis"} color={'name'} style={{stroke: '#fff',lineWidth: 1}} />
+            </Chart>
+            </div>;
+          }
+        }
+        //Dual Axis - Bar-Bar, Bar-line, Bar-xyz
+        class DualAxisChart extends React.Component{
+          render(){
+            return <div style={this.props.styles.wrapper}>
+                <Chart height={this.props.height} data={this.props.data} renderer='svg' scale={this.props.scale} forceFit padding={[60, 70, 60, 60]} >
+                  <span className="main-title" style={this.props.styles.mainTitle}>
+                    {this.props.title}
+                  </span>
+                  <span className="sub-title" style={this.props.styles.subTitle}>
+                    {this.props.subTitle}
+                  </span>
+                  <Axis name={this.props.xAxis}  label={this.props.label.xAxis}/>
+                  <Axis name={this.props.yAxis1} label={this.props.label.yAxis1} title />
+                  <Axis name={this.props.yAxis2} label={this.props.label.yAxis2} title />
+                  <Legend position="top" />
+                  <Tooltip crosshairs={{type:'rect'}} />
+                  <Geom type="interval" position={this.props.xAxis+"*"+ this.props.yAxis1} color="#a8de4d">
+                    <Label content={this.props.geomLabel.yAxis1.content} labelLine={this.props.geomLabel.yAxis1.labelLine} />
+                  </Geom>
+                  <Geom type="line" position={this.props.xAxis+"*"+this.props.yAxis2} color="#f99540" shape="smooth" size={2} label={this.props.label.yAxis2} />
+                  <Geom type="point" position={this.props.xAxis+"*"+this.props.yAxis2} color="#f33274" shape="circle" size={4} />
+                </Chart>
 
 
-      ReactDOM.render((
-        <div>
-        <DualAxisChart height={500} data={dualAxisData} scale={dualAxisScale} title="Title of the Chart" subTitle="Subtitle of the Chart" xAxis="month" yAxis1="rainfall" yAxis2="seaLevelPressure" label={dualAxisLabel} styles={styles} geomLabel={dualAxisGeomLabel}/>
-        <BarChart height={400} data={barData} scale={cols}title="Title of the Chart" subTitle="Subtitle of the Chart" xAxis="year" yAxis="sales" styles={styles} color="#a8de4d" geomLabel={geomLabel}/>
-        <StackedBarChart data={stackedBarData} xAxisElements={[ 'Jan.','Feb.','Mar.','Apr.','May','Jun.','Jul.','Aug.' ]} heigh={500} styles={styles} title="Title of the Chart" subTitle="Subtitle of the Chart"/>
-        <PieChart data={pieData}  height={500} radius={0.75} innerRadius={0.6} />
+              </div>;
+          }
+        }
 
-        </div>
-      ), document.getElementById("mountNode"));
+        ReactDOM.render((
+          <div>
+            <DualAxisChart height={500} data={dualAxisData} scale={dualAxisScale} title="Title of the Chart" 
+              subTitle="Subtitle of the Chart" xAxis="month" yAxis1="rainfall" yAxis2="seaLevelPressure" label={dualAxisLabel} 
+              styles={styles} geomLabel={dualAxisGeomLabel}
+            />
+            
+            <BarChart height={400} data={barData} scale={cols}title="Title of the Chart" subTitle="Subtitle of the Chart" 
+              xAxis="year" yAxis="sales" styles={styles} color="#a8de4d" geomLabel={geomLabel}
+            />
+            
+            <StackedBarChart data={stackedBarData} xAxisElements={[ 'Jan.','Feb.','Mar.','Apr.','May','Jun.','Jul.','Aug.' ]} 
+              height={500} styles={styles} title="Title of the Chart" subTitle="Subtitle of the Chart"
+            />
+
+            <PieChart data={pieData}  height={500} radius={0.75} innerRadius={0.6} />
+          </div>
+        ), document.getElementById("mountNode"));
+
     </script>
   </body>
 </html>

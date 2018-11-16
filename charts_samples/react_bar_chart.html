@@ -1,0 +1,182 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://g.alicdn.com/bizcharts/io-asserts/3.1.2/react16.0.0.production.min.js"></script>
+    <script src="https://g.alicdn.com/bizcharts/io-asserts/3.1.2/react-dom16.0.0.production.min.js"></script>
+    <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bizcharts@3.2.2/umd/BizCharts.min.js"> </script>
+    <script type="text/javascript" src="https://gw.alipayobjects.com/os/antv/assets/data-set/0.8.6/data-set.min.js"></script>
+  </head>
+  <body>
+      <div id="mountNode" ></div>
+      <script type="text/babel">
+
+        const { Chart, Axis, Geom, Tooltip, Coord, Label, Legend, View, Guide, Shape, Facet  } = window.BizCharts;
+        const { DataView } = DataSet;
+        const { Html } = Guide;
+
+        {/* data format api
+
+          geomLabel: {
+            xAxis:{
+              display: true,
+              labelArray: [{"xVar":xLabel}]
+            }, yAxis:{
+              display: true,
+              labelArray: [{"xVar":xLabel}]
+          }};
+
+          data [("xVar":xVal, "yVar":yVal)];
+          
+          metadata {
+            xAxis:{
+              name: "xVar",
+              displayTitle: true,
+              alias: (optional),
+              tickCount: (optional) default: 6,
+              tickInterval : (optional) use either tick interval or count
+            }, yAxis:{
+              name: "yVar",
+              displayTitle: false,
+              alias: (optional),
+              tickCount: (optional) default: 6,
+              tickInterval : (optional) use either tick interval or count
+            },
+            height: in px,
+            color: (optional),
+            title: (optional),
+            subTitle: (optional)
+          };
+        */}
+
+        const bardata = [
+          { year: '1951 ', sales: 38 },
+          { year: '1952 ', sales: 52 },
+          { year: '1956 ', sales: 61 },
+          { year: '1957 ', sales: 145 },
+          { year: '1958 ', sales: 48 },
+          { year: '1959 ', sales: 38 },
+          { year: '1960 ', sales: 38 },
+          { year: '1962 ', sales: 38 },
+        ];
+        
+        const metadata_array={
+          height: 400,
+          color: '#a8de4d',
+          title: 'Title of chart',
+          subtitle: 'Sub-Title of chart'
+        };
+
+        const cols = {
+          'sales': {
+            tickInterval: 20,
+            alias: 'Sales (in Cr)'
+          },
+        };
+
+        const label = {
+          year: {
+            formatter: val => `${val} .`,
+            // 格式化坐标轴显示
+            textStyle: {
+              fill: '#e5d981',
+              rotate: 100
+            }
+          },
+          sales: {
+            formatter: val => `${val}`,
+            // 格式化坐标轴显示
+            textStyle: {// fill: '#f33274',
+              // rotate : 60
+              fontSize: '1em'
+            }
+          }
+        };
+        
+        const geomLabel = {
+          sales: {
+            content: ['year*sales', (year, sales) => `${sales}k`]
+          }
+        };
+
+        const styles = {
+          wrapper: {
+            maxWidth: 1080,
+            textAlign: 'center',
+            padding: 20,
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          },
+          mainTitle: {
+            fontSize: 18,
+            color: '#333',
+            display: 'block',
+            padding: 10
+          },
+          subTitle: {
+            fontSize: 14,
+            color: '#bbb',
+            display: 'block',
+            padding: 10
+          }
+        };
+
+        function ConditionalTitleRender(props){
+          if( props.title !== "" ){
+            return(
+              <span className="main-title" style={props.title_style}>
+                {props.title}
+              </span>
+            );
+          }else{
+            return null;
+          }
+        }
+
+        function ConditionalSubtitleRender(props){
+          if( props.subtitle !== "" ){
+            return(
+              <span className="sub-title" style={props.subtitle_style}>
+                {props.subtitle}
+              </span>
+            );
+          }else{
+            return null;
+          }
+        }
+
+        class BarChart extends React.Component{
+          render(){
+            return(
+              <div style={this.props.styles.wrapper}>
+                  <Chart renderer='svg' height={this.props.metadata.height} data ={this.props.data} scale={this.props.scale} forceFit>
+
+                    <ConditionalTitleRender title={this.props.metadata.title} title_style={this.props.styles.mainTitle}/>
+                    <ConditionalSubtitleRender subtitle={this.props.metadata.subtitle} subtitle_style={this.props.styles.subTitle}/>
+                    
+                    <Axis name={this.props.xAxis} />
+                    <Axis name={this.props.yAxis} title />
+                    <Tooltip crosshairs={{type: "y"}}/>
+
+                    <Geom type="interval" position={this.props.xAxis + "*" + this.props.yAxis} color={this.props.metadata.color}>
+                      <Label content={this.props.geomLabel.sales.content} labelLine={this.props.geomLabel.sales.labelLine} />
+                    </Geom>
+
+                  </Chart>
+              </div>
+            );
+          }
+        }
+
+        ReactDOM.render((
+          <div>
+            <BarChart metadata={metadata_array}
+              data={bardata} scale={cols} xAxis="year" yAxis="sales" styles={styles}
+              geomLabel={geomLabel}
+            />
+          </div>
+        ),document.getElementById("mountNode"));
+
+    </script>
+  </body>
+</html>
