@@ -1,0 +1,34 @@
+// data format for bar-chart
+data: [("xVar":xVal, "yVar":yVal)];
+
+metadata: {
+  xAxis:{
+    name: "xVar",
+    displayTitle: true,
+    alias: (optional),
+    tickCount: (optional) default: 6,
+    tickInterval : (optional) use either tick interval or count
+  }, yAxis:{
+    name: "yVar",
+    displayTitle: false,
+    alias: (optional),
+    tickCount: (optional) default: 6,
+    tickInterval : (optional) use either tick interval or count
+  },
+  height: in px,
+  color: (optional),
+  title: (optional),
+  subTitle: (optional)
+};
+
+geomLabel: {
+  xAxis:{
+    display: true,
+    labelArray: [{"xVar":xLabel}]
+  }, yAxis:{
+    display: true,
+    labelArray: [{"xVar":xLabel}]
+}};
+
+
+// data format for pie-chart

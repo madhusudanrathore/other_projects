@@ -161,7 +161,7 @@
           sales: {
             content: ['year*sales', (year, sales) => `${sales}k`]
           }
-        }; // 默认选中第三项的结果
+        };
 
         const styles = {
           wrapper: {
@@ -265,20 +265,13 @@
           }
         }
 
-        //Multiple Bars with Same Axes
-        class MultiBarChart extends React.Component{
-          render(){
-            return ;
-          }
-        }
-
         class StackedBarChart extends React.Component{
-          transformData(oldData, xAxisElements){
+          transformData(){
             const ds = new DataSet();
-            const dv = ds.createView().source(oldData);
+            const dv = ds.createView().source(this.props.data);
             dv.transform({
               type: 'fold',
-              fields: xAxisElements, // 展开字段集
+              fields: this.props.xAxisElements, // 展开字段集
               key: 'xAxis', // key字段
               value: 'yAxis', // value字段
             });
@@ -286,7 +279,7 @@
           }
           render(){
             return <div style={this.props.styles.wrapper}>
-            <Chart height={this.props.height} data={this.transformData(this.props.data,this.props.xAxisElements)} forceFit>
+            <Chart height={this.props.height} data={this.transformData()} forceFit>
             <span className="main-title" style={this.props.styles.mainTitle}>
               {this.props.title}
             </span>
@@ -302,6 +295,7 @@
             </div>;
           }
         }
+        
         //Dual Axis - Bar-Bar, Bar-line, Bar-xyz
         class DualAxisChart extends React.Component{
           render(){
