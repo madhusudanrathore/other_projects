@@ -30,11 +30,11 @@
         ];
         
         const pieData = [
-        { item: 'abc', count: 30 },
-        { item: 'cba', count: 20 },
-        { item: 'xyz', count: 11 },
-        { item: 'zyx', count: 10 },
-        { item: 'abcagain', count: 30 }
+          { item: 'abc', count: 30 },
+          { item: 'cba', count: 20 },
+          { item: 'xyz', count: 11 },
+          { item: 'zyx', count: 10 },
+          { item: 'abcagain', count: 30 }
         ];
         
         const dualAxisData = [{
@@ -157,6 +157,7 @@
             }
           }
         };
+
         const geomLabel = {
           sales: {
             content: ['year*sales', (year, sales) => `${sales}k`]
@@ -213,55 +214,56 @@
 
           getScale(){
             const cols = {
-            percent: {
-              formatter: val => {
-                val = (val.toFixed(4) * 100) + '%';
-                return val;
+              percent: {
+                formatter: val => {
+                  val = (val.toFixed(4) * 100) + '%';
+                  return val;
+                }
               }
-            }
-          };
-          return cols;
+            };
+            return cols;
           }
 
-         transformData(oldData){
-             const dv1 = new DataView();
-             dv1.source(oldData).transform({
-               type: 'percent',
-               field: 'count',
-               dimension: 'item',
-               as: 'percent'
-             });
-             return dv1;
-           }
+          transformData(oldData){
+               const dv1 = new DataView();
+               dv1.source(oldData).transform({
+                 type: 'percent',
+                 field: 'count',
+                 dimension: 'item',
+                 as: 'percent'
+               });
+               return dv1;
+          }
 
           render() {
-            return <div >
-              <Chart renderer='svg' height={this.props.height} data={this.transformData(this.props.data)} scale={this.getScale()} forceFit>
-                <Coord type={'theta'} radius={this.props.radius} innerRadius={this.props.innerRadius}/>
-                <Axis name="percent" />
-                <Tooltip showTitle={false}
-                  itemTpl = '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-                  />
-                <Guide>
-                </Guide>
-                <Geom
-                  type="intervalStack"
-                  position="percent"
-                  color ='item'
-                  tooltip={['item*percent',(item, percent) => {
-                    percent = percent.toFixed(4) * 100 + '%';
-                    return {
-                      name: item,
-                      value: percent
-                    };
-                  }]}
-                  style={{lineWidth: 1,stroke: '#fff'}}
-                >
-                <Label content='percent'  textStyle={{fontSize:24}} formatter={(val, item) => {
-                    return item.point.item + '- ' + val;}} />
-                </Geom>
-              </Chart>
-            </div>;
+            return(
+              <div >
+                <Chart renderer='svg' height={this.props.height} data={this.transformData(this.props.data)} scale={this.getScale()} forceFit>
+                  <Coord type={'theta'} radius={this.props.radius} innerRadius={this.props.innerRadius}/>
+                  <Axis name="percent" />
+                  <Tooltip showTitle={false}
+                    itemTpl = '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+                    />
+                  <Guide></Guide>
+                  <Geom
+                    type="intervalStack"
+                    position="percent"
+                    color ='item'
+                    tooltip={['item*percent',(item, percent) => {
+                      percent = percent.toFixed(4) * 100 + '%';
+                      return {
+                        name: item,
+                        value: percent
+                      };
+                    }]}
+                    style={{lineWidth: 1,stroke: '#fff'}}
+                  >
+                  <Label content='percent' formatter={(val, item) => {
+                      return item.point.item + '- ' + val;}} />
+                  </Geom>
+                </Chart>
+              </div>
+            );
           }
         }
 

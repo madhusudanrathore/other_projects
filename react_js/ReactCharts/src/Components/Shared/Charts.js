@@ -2,8 +2,8 @@ import React from 'react';
 import {Chart, Axis, Geom, Tooltip, Coord, Label, Legend, View, Guide, Shape, Facet} from 'bizcharts';
 import {DataSet} from '@antv/data-set';
 
-const { DataView }=DataSet;
-const { Html }=Guide;
+const {DataView}=DataSet;
+const {Html}=Guide;
 
 // global styles for charts
 var styles={
@@ -52,30 +52,46 @@ function ConditionalSubtitleRender(props){
   }
 }
 
+function NewGraph(props){
+  if(typeof porps !== "undefined" ){
+    return(
+      // console.log(props.param.point.year)
+      <h1>{props.param.point.year}</h1>
+    );
+  }else{
+    return null;
+  }
+}
+
 class BarChart extends React.Component{
-  // below is the generic implementation for cols
-  // getScale(){
-  //     var bar_cols={
-  //       '{this.props.metadata.yAxis.name}':{
-  //         tickInterval: {this.props.metadata.tickInterval},
-  //         alias: {this.props.metadata.alias},
-  //     }
-  //   };
-  //   return bar_cols;
-  // }
+  // generic implementation for cols
   getScale(){
-      var bar_cols={
-        'sales':{
-          tickInterval: 20,
-          alias: 'Sales (in Cr)',
+    return({
+      [this.props.metadata.yAxis.name]:{
+        "tickInterval": [this.props.metadata.yAxis.tickInterval],
+        "alias": [this.props.metadata.yAxis.alias.toString()]
       }
-    };
-    return bar_cols;
+    });
   }
   render(){
     return(
       <div style={styles.wrapper}>
-          <Chart renderer='svg' height={this.props.metadata.height} data ={this.props.data} scale={this.getScale()} forceFit>
+          <Chart renderer='svg' height={this.props.metadata.height} data={this.props.data}
+            scale={this.getScale()} forceFit
+
+            // action performed when plotted bar is clicked
+            onPlotClick={ev=>{
+              var point = {
+                x: ev.x,
+                y: ev.y
+              };
+              // check if bar was clicked
+              if(typeof ev.data !== "undefined" ){
+                // now get data of bar which was clicked
+                console.log(ev, ev.data.point.year, ev.data.point.sales);
+              }
+            }}
+          >
 
             <ConditionalTitleRender title_param={this.props.metadata.title} />
             <ConditionalSubtitleRender subtitle_param={this.props.metadata.subtitle} />
@@ -102,63 +118,77 @@ class PieChart extends React.Component{
         formatter: val => {
           val = (val.toFixed(4) * 100) + '%';
           return val;
+          }
         }
-      }
-    };
+      };
     return cols;
   }
 
-  transformData(oldData){
-     const dv1 = new DataView();
-     dv1.source(oldData).transform({
-       type: 'percent',
-       field: 'count',
-       dimension: 'item',
-       as: 'percent'
-     });
-     return dv1;
-  }
+	transformData(oldData){
+	 const dv1 = new DataView();
+	 dv1.source(oldData).transform({
+	   type: 'percent',
+	   field: 'count',
+	   dimension: 'item',
+	   as: 'percent'
+	 });
+	 return dv1;
+	}
 
   render() {
-    return <div >
-      <Chart renderer='svg' height={this.props.metadata.height} data={this.transformData(this.props.data)} scale={this.getScale()} forceFit>
-        
-        <Coord type={'theta'} radius={this.props.metadata.radius} innerRadius={this.props.metadata.innerRadius}/>
-        <Axis name="percent" />
-        <Tooltip showTitle={false}
-          itemTpl = '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-        />
-        <Guide></Guide>
+    return(
+      <div>
+        <Chart renderer='svg' height={this.props.metadata.height} data={this.transformData(this.props.data)} scale={this.getScale()} forceFit>
+          <Legend position="bottom" />
+          <Tooltip showTitle={false} itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>" />
 
-        <Geom
-          type="intervalStack"
-          position="percent"
-          color ='item'
-          tooltip={['item*percent',(item, percent) => {
-            percent = percent.toFixed(4) * 100 + '%';
-            return {
-              name: item,
-              value: percent
-            };
-          }]}
-          style={{lineWidth: 1,stroke: '#fff'}}
-        >
-        <Label content='percent'  textStyle={{fontSize:24}} formatter={(val, item) => {
-            return item.point.item + '- ' + val;}} />
-        </Geom>
+          <Coord type={'theta'} radius={this.props.metadata.radius} innerRadius={this.props.metadata.innerRadius}/>
+          <Axis name="percent" />
+          
+          <Guide></Guide>
 
-      </Chart>
-    </div>;
+          <Geom
+            type="intervalStack"
+            position="percent"
+            color ='item'
+            tooltip={['item*percent',(item, percent) => {
+              percent = percent.toFixed(4) * 100 + '%';
+              return {
+                name: item,
+                value: percent
+              };
+            }]}
+            style={{lineWidth: 1,stroke: '#fff'}}
+          >
+            <Label content='percent' formatter={(val, item) => { return item.point.item + '- ' + val; }} />
+          </Geom>
+
+        </Chart>
+      </div>
+    );
   }
 }
 
 class StackedBarChart extends React.Component{
   transformData(){
+
+    var temp=this.props.data[0], arr=[];
+    var temp2, count=0;
+    
+    for(temp2 in temp){
+      if(count>0){
+        arr.push(temp2);
+      }
+      ++count;
+    }
+    // console.log(arr);
+
+    // arr holds all the fields for current dataset
     const ds = new DataSet();
     const dv = ds.createView().source(this.props.data);
     dv.transform({
       type: 'fold',
-      fields: this.props.metadata.elements,
+      fields: arr,
       key: 'xAxis',
       value: 'yAxis',
     });

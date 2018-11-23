@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BarChart, PieChart, StackedBarChart} from './components/Charts';
+import {NavBar, Footer} from './Components/Shared/HeaderAndFooter';
+import {BarChart, PieChart, StackedBarChart} from './Components/Shared/Charts';
 
 // bar-chart-data section
 var bar_metadata={
@@ -17,7 +18,7 @@ var bar_metadata={
   yAxis: {
     name: 'sales',
     displayTitle: false,
-    tickInterval: 10,
+    tickInterval: 20,
     alias: 'Sales (in Cr)'
   },
 };
@@ -59,7 +60,6 @@ var stacked_bar_metadata={
   height: 500,
   title: 'Title of Stacked Bar chart',
   subtitle: 'Sub-Title of Stacked Bar Chart',
-  elements: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug']
 };
 var stacked_bar_data=[
   { name:'London', 'Jan': 18.9, 'Feb': 28.8, 'Mar' :39.3, 'Apr': 81.4, 'May': 47, 'Jun': 20.3, 'Jul': 24, 'Aug': 35.6 },
@@ -68,8 +68,15 @@ var stacked_bar_data=[
 
 ReactDOM.render((
   <div>
+    <NavBar />
     <BarChart data={bar_data} metadata={bar_metadata} geomLabel={bar_geom_label} />
     <PieChart data={pie_data} metadata={pie_metadata} />
     <StackedBarChart data={stacked_bar_data} metadata={stacked_bar_metadata} />
+    <Footer />
   </div>
 ), document.getElementById("root"));
+
+// no passing keys-metadata in bar stacked chart
+// generic implementation for bar columns
+// header and footer made permanent
+// implement custom headers and footers
