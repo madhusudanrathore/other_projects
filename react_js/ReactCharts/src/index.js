@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {NavBar, Footer} from './Components/Shared/HeaderAndFooter';
+import {Affix, Layout, Menu, Icon} from 'antd';
+import {Navbar, Footer} from './Components/Shared/NavbarAndFooter';
 import {BarChart, PieChart, StackedBarChart} from './Components/Shared/Charts';
+
+import 'antd/dist/antd.css';
+
+const {Content, Sider}=Layout;
 
 // bar-chart-data section
 var bar_metadata={
@@ -66,17 +71,58 @@ var stacked_bar_data=[
   { name:'Berlin', 'Jan': 12.4, 'Feb': 23.2, 'Mar' :34.5, 'Apr': 99.7, 'May': 52.6, 'Jun': 35.5, 'Jul': 37.4, 'Aug': 42.4}
 ];
 
+// to make side-navigation-bar's height 100%
+// not working
+// affix makes it not working
+var sider_style={
+  height:`100%`
+};
 ReactDOM.render((
   <div>
-    <NavBar />
-    <BarChart data={bar_data} metadata={bar_metadata} geomLabel={bar_geom_label} />
-    <PieChart data={pie_data} metadata={pie_metadata} />
-    <StackedBarChart data={stacked_bar_data} metadata={stacked_bar_metadata} />
-    <Footer />
+  <Navbar />
+    <Layout>
+      
+      {/*<Affix onChange={affixed => console.log(affixed)}>*/}
+        <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
+          onBreakpoint={(broken) => { console.log("broken ",broken); }}
+          onCollapse={(collapsed, type) => { console.log("collapsed ", collapsed, type); }}
+        >
+          <div className="logo" />
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+            <Menu.Item key="1">
+              <Icon type="user" />
+              <span className="nav-text">nav 1</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Icon type="video-camera" />
+              <span className="nav-text">nav 2</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="upload" />
+              <span className="nav-text">nav 3</span>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Icon type="user" />
+              <span className="nav-text">nav 4</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+      {/*</Affix>*/}
+
+      <Layout>
+        <Content>
+          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+            <BarChart data={bar_data} metadata={bar_metadata} geomLabel={bar_geom_label} />   
+            <PieChart data={pie_data} metadata={pie_metadata} />
+            <StackedBarChart data={stacked_bar_data} metadata={stacked_bar_metadata} />
+          </div>
+        </Content>
+        <Footer />
+      </Layout>
+    </Layout>
   </div>
 ), document.getElementById("root"));
-
-// no passing keys-metadata in bar stacked chart
-// generic implementation for bar columns
+// 24th
 // header and footer made permanent
-// implement custom headers and footers

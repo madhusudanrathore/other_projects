@@ -1,9 +1,8 @@
 import React from 'react';
-import {Chart, Axis, Geom, Tooltip, Coord, Label, Legend, View, Guide, Shape, Facet} from 'bizcharts';
+import {Chart, Axis, Geom, Tooltip, Coord, Label, Legend, Guide} from 'bizcharts';
 import {DataSet} from '@antv/data-set';
 
 const {DataView}=DataSet;
-const {Html}=Guide;
 
 // global styles for charts
 var styles={
@@ -52,17 +51,6 @@ function ConditionalSubtitleRender(props){
   }
 }
 
-function NewGraph(props){
-  if(typeof porps !== "undefined" ){
-    return(
-      // console.log(props.param.point.year)
-      <h1>{props.param.point.year}</h1>
-    );
-  }else{
-    return null;
-  }
-}
-
 class BarChart extends React.Component{
   // generic implementation for cols
   getScale(){
@@ -78,17 +66,9 @@ class BarChart extends React.Component{
       <div style={styles.wrapper}>
           <Chart renderer='svg' height={this.props.metadata.height} data={this.props.data}
             scale={this.getScale()} forceFit
-
-            // action performed when plotted bar is clicked
-            onPlotClick={ev=>{
-              var point = {
-                x: ev.x,
-                y: ev.y
-              };
-              // check if bar was clicked
-              if(typeof ev.data !== "undefined" ){
-                // now get data of bar which was clicked
-                console.log(ev, ev.data.point.year, ev.data.point.sales);
+            onPlotClick={ev=>{ // action performed when plotted bar is clicked
+              if(typeof ev.data !== "undefined" ){ // check if bar was clicked
+                console.log(ev, ev.data.point.year, ev.data.point.sales); // now get data of bar which was clicked
               }
             }}
           >
