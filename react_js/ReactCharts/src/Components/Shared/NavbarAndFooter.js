@@ -1,61 +1,63 @@
 import React from 'react';
-import './custom_style.css';
+import $ from 'jquery';
+import './NavbarAndFooter.css';
+
+$('.navbar-link').click(function(){
+	$(".navbar-link").removeclassName("active");
+	$(this).addclassName("active");
+});
 
 class Navbar extends React.Component{
 	render(){
-		const boxShadowColor="rgba(124, 146, 169, 0.5)";
-		const headerStyles={
-			navbar:{
-				boxShadow: `0 1px 11px ${boxShadowColor}`,
-			},
-			logo:{
-				margin:0,
-			},
-			logo_link:{
-				display:`block`,
-			},
-			logo_image:{
-				verticalAlign:`bottom`,
-			},
-			navbar_search_container:{
-				textAlign:`right`,
-			},
-			navbar_search:{
-				width: `125px`,
-				height: `10px`,
-				margin: `2px`,
-			    transition: "width 0.4s ease-in-out",
-			},
-		};
 		return(
-			<header>
-				<div className="navbar" style={headerStyles.navbar}>
-					<nav className="nav__mobile"></nav>
-					<div className="container">
-						<div className="navbar__inner">
-							<div className="navbar__logo" style={headerStyles.logo}>
-								<a className="navbar__logo" href="https://finception.in" style={headerStyles.logo_link}><img src="https://finception.in/static/images/nav_logo.svg" alt="" style={headerStyles.logo_image} /></a>
-							</div>
-							<input type="text" style={headerStyles.navbar_search} name="search" placeholder="Search.." />
-							<nav className="navbar__menu">
-								<ul>
-									<li><a href="https://finception.in/">Home</a></li>
-									<li><a href="https://finception.in/stocks/">Stock Stories</a></li>
-									<li><a href="https://finception.in/ipo/">IPO Cafe</a></li>
-									<li><a href="https://finception.in/about/">About Us</a></li>
-								</ul>
-							</nav>
-							<div className="navbar__menu-mob">
-								<button href="" id='toggle'>
-									<svg role="img" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 448 512">
-										<path fill="#000" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" className=""></path>
-									</svg>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</header>
+		    <nav id="custom-navbar" className="navbar navbar-default">
+
+		        <div className="container-fluid">
+		            
+		            <div className="navbar-header">
+		                <button type="button" onClick={this.myClick} className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		                    <span className="sr-only">Toggle navigation</span>
+		                    <span className="icon-bar"></span>
+		                    <span className="icon-bar"></span>
+		                    <span className="icon-bar"></span>
+		                </button>
+		                <a className="navbar-brand" href="#/Menu">
+		                    <img src="https://finception.in/static/images/nav_logo.svg" alt="logo" style={{width:'180px'}} />
+		                </a>
+		            </div>
+
+		            <div className="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+		                <ul className="nav navbar-nav navbar-right">
+		                    <li className="navbar-link"><a href="#/Activity">News</a></li>
+		                    <li className="navbar-link active"><a href="#/Customers">Contact</a></li>
+		                    <li className="navbar-link"><a href="#/Inventory">About</a></li>
+		                </ul>
+		            </div>
+
+		            <form className="navbar-form navbar-search" id="navbar-search-normal">
+		                <div className="form-group has-feedback">
+		                    <input type="text" className="form-control" id="navbar-search-input" placeholder="Search" />
+		                    <i className="form-control-feedback glyphicon glyphicon-search"></i>
+		                </div>
+		            </form>
+
+		        </div>
+
+		    </nav>
+			
+			/*<script>{`
+		        var prevScrollpos = window.pageYOffset;
+		        window.onscroll = function() {
+		          var currentScrollPos = window.pageYOffset;
+		          if (prevScrollpos > currentScrollPos) {
+		            document.getElementById("custom-navbar").style.top = "0";
+		          } else {
+		            document.getElementById("custom-navbar").style.top = "-110px";
+		          }
+		          prevScrollpos = currentScrollPos;
+		        }
+			`}</script>*/
+
 		);
 	}
 }

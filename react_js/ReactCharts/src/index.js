@@ -71,41 +71,42 @@ var stacked_bar_data=[
   { name:'Berlin', 'Jan': 12.4, 'Feb': 23.2, 'Mar' :34.5, 'Apr': 99.7, 'May': 52.6, 'Jun': 35.5, 'Jul': 37.4, 'Aug': 42.4}
 ];
 
-// to make side-navigation-bar's height 100%
-// not working
-// affix makes it not working
-var sider_style={
-  height:`100%`
+const siderStyles={
+  sider:{
+    positon:'fixed',
+    overflow: 'auto',
+  },
+  menu:{
+    height: '100%',
+    positon:'fixed',
+    margin: '0',
+  },
 };
 ReactDOM.render((
   <div>
-  <Navbar />
+    <Navbar />
+    
     <Layout>
       
       {/*<Affix onChange={affixed => console.log(affixed)}>*/}
         <Sider
           breakpoint="lg"
           collapsedWidth="0"
-          onBreakpoint={(broken) => { console.log("broken ",broken); }}
-          onCollapse={(collapsed, type) => { console.log("collapsed ", collapsed, type); }}
+          theme="light"
+          style={siderStyles.sider}
+          /*onBreakpoint={(broken) => { console.log("broken ",broken); }}
+          onCollapse={(collapsed, type) => { console.log("collapsed ", collapsed, type); }}*/
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+          <Menu mode="inline" theme="light" style={siderStyles.menu} defaultSelectedKeys={['1']}>
             <Menu.Item key="1">
-              <Icon type="user" />
-              <span className="nav-text">nav 1</span>
+              <span className="nav-text">Bar Chart</span>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span className="nav-text">nav 2</span>
+              <span className="nav-text">Pie Chart</span>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="upload" />
-              <span className="nav-text">nav 3</span>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Icon type="user" />
-              <span className="nav-text">nav 4</span>
+              <span className="nav-text">Stacked Bar Chart</span>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -119,10 +120,9 @@ ReactDOM.render((
             <StackedBarChart data={stacked_bar_data} metadata={stacked_bar_metadata} />
           </div>
         </Content>
-        <Footer />
       </Layout>
     </Layout>
+    
+    <Footer />
   </div>
 ), document.getElementById("root"));
-// 24th
-// header and footer made permanent
