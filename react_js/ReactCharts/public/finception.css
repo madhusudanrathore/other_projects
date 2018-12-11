@@ -1221,7 +1221,9 @@ select {
 
 .footer {
   background-color: #ffffff;
-  padding: 36pt 0; }
+  padding: 36pt 0;
+  z-index: 99;
+}
 
 .footer__inner {
   -js-display: flex;

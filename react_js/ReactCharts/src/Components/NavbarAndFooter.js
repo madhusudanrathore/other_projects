@@ -1,12 +1,81 @@
+// top-nav, side-nav, footer
 import React from 'react';
-import $ from 'jquery';
 import './NavbarAndFooter.css';
 
-$('.navbar-link').click(function(){
-	$(".navbar-link").removeclassName("active");
-	$(this).addclassName("active");
-});
+// side navigaiton animations
+function toggle_sidenav_hide_show() {
+	if(document.getElementById("openbtn").style.marginLeft === "205px"){
+    	document.getElementById("mySidebar").style.display = "none";
+    	document.getElementById("openbtn").style.marginLeft = "0px";
+	}else{
+		document.getElementById("mySidebar").style.display = "block";
+    	document.getElementById("openbtn").style.marginLeft = "205px";
+	}
+}
 
+class Sidenav extends React.Component{
+	constructor(props) {
+		super(props);
+		this.state = {activeSidebarLink: 'sidenav-link1'};
+		this.sidenav_link_click = this.sidenav_link_click.bind(this);
+	}
+
+	sidenav_link_click(obj){
+		var a=obj.split(" ");
+		// console.log(window.innerWidth, a[0], a[1]);
+		console.log("new req ", a[1]);
+		
+		document.getElementById(this.state.activeSidebarLink).classList.remove('sidenav-active');
+		this.setState(prev_state=>({
+				// console.log("old ", this.state.activeSidebarLink),
+				activeSidebarLink:a[1],
+				// console.log("state new "+this.state.activeSidebarLink)
+			})
+		);
+		console.log("new final ", this.state.activeSidebarLink);
+		// document.getElementById(a[1]).classList.add('sidenav-active');
+
+
+		if( window.innerWidth < 993 ){
+			toggle_sidenav_hide_show();
+		}
+	}
+	render(){
+		return(
+			<div id="sidebar-container">
+				<div className="w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" id="mySidebar">
+					<a id="sidenav-link sidenav-link1" className="w3-bar-item w3-button sidenav-active" href="#main_header" onClick={e => this.sidenav_link_click(e.target.id)}>Main Header</a>
+					<a id="sidenav-link sidenav-link2" className="w3-bar-item w3-button" href="#piechart" onClick={e => this.sidenav_link_click(e.target.id)}>Piechart</a>
+					<a id="sidenav-link sidenav-link3" className="w3-bar-item w3-button" href="#operational_metrics" onClick={e => this.sidenav_link_click(e.target.id)}>Operational Metrics</a>
+				</div>
+				<button id="openbtn" onClick={toggle_sidenav_hide_show}>&#9776;</button>
+			</div>
+		);
+	}
+}
+
+// toggle highlight sections of top navigaiton
+
+// hiding top nav when scrool down
+// show top nav when scrool up
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+
+  if (prevScrollpos > currentScrollPos) { // scrolling up
+    document.getElementById("custom-navbar").style.top = "0";
+    document.getElementById("sidebar-container").style.marginTop = "-5px";
+  } else { // scrolling down
+    document.getElementById("custom-navbar").style.top = "-230px";
+	if(window.innerWidth <= 550){ // mobile view
+		document.getElementById("sidebar-container").style.marginTop = "-100px";
+  	}else{ // nonmobile view
+		document.getElementById("sidebar-container").style.marginTop = "-60px";
+  	}
+
+  }
+  prevScrollpos = currentScrollPos;
+}
 class Navbar extends React.Component{
 	render(){
 		return(
@@ -28,9 +97,9 @@ class Navbar extends React.Component{
 
 		            <div className="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 		                <ul className="nav navbar-nav navbar-right">
-		                    <li className="navbar-link"><a href="#/Activity">News</a></li>
-		                    <li className="navbar-link active"><a href="#/Customers">Contact</a></li>
-		                    <li className="navbar-link"><a href="#/Inventory">About</a></li>
+		                	<li className="navbar-link"><a href="https://finception.in/stocks/">Stock Stories</a></li>
+		                	<li className="navbar-link"><a href="https://finception.in/about/">About</a></li>
+		                    <li className="navbar-link"><a href="https://finception.in/subscribe/utm_source=ipoheader">Subscribe</a></li>
 		                </ul>
 		            </div>
 
@@ -44,20 +113,6 @@ class Navbar extends React.Component{
 		        </div>
 
 		    </nav>
-			
-			/*<script>{`
-		        var prevScrollpos = window.pageYOffset;
-		        window.onscroll = function() {
-		          var currentScrollPos = window.pageYOffset;
-		          if (prevScrollpos > currentScrollPos) {
-		            document.getElementById("custom-navbar").style.top = "0";
-		          } else {
-		            document.getElementById("custom-navbar").style.top = "-110px";
-		          }
-		          prevScrollpos = currentScrollPos;
-		        }
-			`}</script>*/
-
 		);
 	}
 }
@@ -118,4 +173,4 @@ class Footer extends React.Component{
 	}
 }
 
-export {Navbar, Footer};
+export {Navbar, Sidenav, Footer};
